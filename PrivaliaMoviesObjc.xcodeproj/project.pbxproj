@@ -112,7 +112,7 @@
 				244A97511DBA7ED000184C2E /* AboutViewController.h */,
 				244A97521DBA7ED000184C2E /* AboutViewController.m */,
 			);
-			name = ViewControllers;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		244A97541DBA7F9600184C2E /* Views */ = {
@@ -125,7 +125,7 @@
 				244A97571DBA842000184C2E /* MovieCellTableViewCell.h */,
 				244A97581DBA842000184C2E /* MovieCellTableViewCell.m */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		244A97551DBA7FA400184C2E /* Models */ = {
@@ -134,7 +134,7 @@
 				244A975A1DBBD79B00184C2E /* Movie.h */,
 				244A975B1DBBD79B00184C2E /* Movie.m */,
 			);
-			name = Models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		244A97561DBA7FBD00184C2E /* Controllers */ = {
@@ -143,7 +143,7 @@
 				244A975D1DBBD7E200184C2E /* MovieManager.h */,
 				244A975E1DBBD7E200184C2E /* MovieManager.m */,
 			);
-			name = Controllers;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

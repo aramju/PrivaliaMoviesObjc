@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="215"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j4a-rl-2kq" id="XvQ-Bm-vHx">
-                                    <frame key="frameInset" width="375" height="214.5"/>
+                                    <frame key="frameInset" width="375" height="214"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8NK-zd-8FA" customClass="RemoteImageView">
@@ -249,7 +249,7 @@
         <scene sceneID="9Ht-g5-AY4">
             <objects>
                 <navigationController id="B1F-oQ-vQ6" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="About" id="KfV-a8-2bZ"/>
+                    <tabBarItem key="tabBarItem" title="About" image="profile" selectedImage="profile" id="KfV-a8-2bZ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="6lB-C0-QtN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -373,4 +373,7 @@
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="profile" width="28" height="28"/>
+    </resources>
 </document>
