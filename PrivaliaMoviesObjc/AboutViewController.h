@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  AboutViewController.h
 //  PrivaliaMoviesObjc
 //
 //  Created by Aram Julhakyan on 21/10/16.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FirstViewController : UIViewController
-
+@interface AboutViewController : UIViewController
 
 @end
-

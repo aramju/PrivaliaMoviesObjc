@@ -1,5 +1,5 @@
 //
-//  SecondViewController.h
+//  MoviesViewController.h
 //  PrivaliaMoviesObjc
 //
 //  Created by Aram Julhakyan on 21/10/16.
@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MovieManager.h"
 
-@interface SecondViewController : UIViewController
-
+@interface MoviesViewController : UITableViewController <MovieManagerDelegate>{
+    MovieManager *movieManager;
+}
 
 @end
-
