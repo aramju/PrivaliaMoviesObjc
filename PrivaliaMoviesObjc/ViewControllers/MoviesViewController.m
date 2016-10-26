@@ -9,7 +9,6 @@
 #import "MoviesViewController.h"
 #import "MovieCellTableViewCell.h"
 #import "MBProgressHUD.h"
-#import "Movie.h"
 
 #define MOVIES_IN_PAGE 10
 
@@ -100,15 +99,15 @@
     
         MovieCellTableViewCell *cell = (MovieCellTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
         
-        Movie *movie = [movieManager.movies objectAtIndex:indexPath.row];
+        NSDictionary *movie = [movieManager getMovieInfoForIndex:indexPath.row];
         
-        cell.titleLabel.text = movie.title;
-        cell.yearLabel.text = movie.year;
-        cell.overviewLabel.text = movie.overview;
+        cell.titleLabel.text = [movie objectForKey:@"title"];
+        cell.yearLabel.text =[movie objectForKey:@"year"];
+        cell.overviewLabel.text = [movie objectForKey:@"overview"];
         
         cell.movieImage.image = nil;
-        if (movie.posterURL){
-            [cell.movieImage loadImageURL:[NSURL URLWithString:[movie.posterURL stringByAddingPercentEscapesUsingEncoding:
+        if ([movie objectForKey:@"posterURL"]){
+            [cell.movieImage loadImageURL:[NSURL URLWithString:[[movie objectForKey:@"posterURL"]  stringByAddingPercentEscapesUsingEncoding:
                                                      NSUTF8StringEncoding]] withCompleteBlock:^(UIImage *image) {
                 
             } withErrorBlock:^(NSError *error) {
@@ -126,49 +125,5 @@
     }
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

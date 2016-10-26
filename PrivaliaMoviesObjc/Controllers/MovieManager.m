@@ -72,7 +72,9 @@
     self.currentPage = 0;
     [self.movies removeAllObjects];
     
-   
+    [self.tasks enumerateObjectsUsingBlock:^(NSURLSessionDataTask *taskObj, NSUInteger idx, BOOL *stop) {
+        [taskObj cancel]; /// when sending cancel to the task failure: block is going to be called
+    }];
      
 }
 
@@ -117,6 +119,12 @@
     return movie;
 }
 
+-(void)updatePagesFromResponse:(NSHTTPURLResponse *)resp{
+    self.totalItems = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Item-Count"] integerValue];
+    self.totalPages = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Page-Count"] integerValue];
+    self.currentPage = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Page"] integerValue];
+}
+
 
 - (void)loadMoviesForPage:(NSInteger)page andSearchTerm:(NSString *)term{
     if (!term || term.length==0){
@@ -141,10 +149,10 @@
     
     
     [self.tasks enumerateObjectsUsingBlock:^(NSURLSessionDataTask *taskObj, NSUInteger idx, BOOL *stop) {
-        [taskObj cancel]; /// when sending cancel to the task failure: block is going to be called
+        [taskObj cancel]; /// cancel the pending task
     }];
     
-    /// empty the arraOfTasks
+    /// empty the array of tasks
     [self.tasks removeAllObjects];
     
     
@@ -158,30 +166,24 @@
         if (data.length > 0 && error == nil)
         {
            
-            NSLog(@"*********** URL: %@", connectinoTask.response.URL.absoluteString);
             NSArray *obtainedData = [NSJSONSerialization JSONObjectWithData:data
                                                                     options:0
                                                                       error:NULL];
             
             NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
-            
-            self.totalItems = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Item-Count"] integerValue];
-            self.totalPages = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Page-Count"] integerValue];
-            self.currentPage = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Page"] integerValue];
-            
+            [self updatePagesFromResponse:resp];
             
             for (NSDictionary *d in obtainedData){
                 Movie *movie = [self createMovieFromData:d];
                 [self.movies addObject:movie];
             }
-            NSLog(@"COnnection done ***************** %@", [response.URL absoluteString]);
+            
             [self notifyMoviedDidLoad];
             
         }else if (error){
             //NSLog(@"******** LocalizedDescr: %@",error.userInfo[@"NSLocalizedDescription"]);
             if ([error.userInfo[@"NSLocalizedDescription"] isEqualToString:@"cancelled"]){
                 //Do nothing
-                NSLog(@"COnnection Cancelled ***************");
             }else{
                 [self notifyError];
             }
@@ -193,6 +195,18 @@
     [self.tasks addObject:connectinoTask];
     
     
+}
+
+-(NSDictionary *)getMovieInfoForIndex:(NSInteger)index{
+    if (index > self.movies.count-1)
+        return nil;
+    
+    Movie *m = [self.movies objectAtIndex:index];
+    
+    if (m.posterURL)
+        return @{@"title" : m.title, @"year" : m.year, @"overview" : m.overview, @"posterURL" : m.posterURL};
+    else
+        return @{@"title" : m.title, @"year" : m.year, @"overview" : m.overview};
 }
 
 
@@ -209,11 +223,7 @@
                                                                        error:NULL];
             
             NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
-            
-            self.totalItems = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Item-Count"] integerValue];
-            self.totalPages = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Page-Count"] integerValue];
-            self.currentPage = [[[resp allHeaderFields ] objectForKey:@"X-Pagination-Page"] integerValue];
-            
+            [self updatePagesFromResponse:resp];
             
             for (NSDictionary *d in obtainedData){
                 Movie *movie = [self createMovieFromData:d];

@@ -9,7 +9,7 @@
 #import "SearchViewController.h"
 #import "MovieCellTableViewCell.h"
 #import "MBProgressHUD.h"
-#import "Movie.h"
+
 
 
 
@@ -38,6 +38,7 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     [spinner startAnimating];
     
+    //I start the search after half second to don't flood the server
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(loadSearch) object:nil];
     [self performSelector:@selector(loadSearch) withObject:nil afterDelay:0.5];
     
@@ -122,21 +123,19 @@
         
         MovieCellTableViewCell *cell = (MovieCellTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
         
-        Movie *movie = [movieManager.movies objectAtIndex:indexPath.row];
+        NSDictionary *movie = [movieManager getMovieInfoForIndex:indexPath.row];
         
-        
-        
-        cell.titleLabel.text = movie.title ? movie.title : @" ";
-        cell.yearLabel.text = movie.year ? movie.year : @" ";
-        cell.overviewLabel.text = movie.overview ? movie.overview : @" ";
+        cell.titleLabel.text = [movie objectForKey:@"title"];
+        cell.yearLabel.text =[movie objectForKey:@"year"];
+        cell.overviewLabel.text = [movie objectForKey:@"overview"];
         
         cell.movieImage.image = nil;
-        if (movie.posterURL){
+        if ([movie objectForKey:@"posterURL"]){
             
-            [cell.movieImage loadImageURL:[NSURL URLWithString:movie.posterURL] withCompleteBlock:^(UIImage *image) {
-                NSLog(@"Loaded");
+            [cell.movieImage loadImageURL:[NSURL URLWithString:[movie objectForKey:@"posterURL"]] withCompleteBlock:^(UIImage *image) {
+                
             } withErrorBlock:^(NSError *error) {
-                NSLog(@"ERROR LOADING");
+                cell.movieImage.image = [UIImage imageNamed:@"noimage"];
             }];
         }else{
             cell.movieImage.image = [UIImage imageNamed:@"noimage"];

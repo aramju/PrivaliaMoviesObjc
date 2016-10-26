@@ -33,6 +33,8 @@
 //Loads the list of movies given the page and search term
 - (void)loadMoviesForPage:(NSInteger)page andSearchTerm:(NSString *)term;
 
+-(NSDictionary *)getMovieInfoForIndex:(NSInteger)index;
+
 
 
 @end
